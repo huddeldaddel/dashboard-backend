@@ -1,0 +1,16 @@
+spring:
+  profiles: local
+
+server:
+  port: 8080
+
+# use local mongodb at localhost:27017
+
+spring:
+  profiles: production
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+server:
+  port: ${PORT}

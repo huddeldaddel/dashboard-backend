@@ -1,10 +1,10 @@
 spring:
   profiles: local
 
+# use local mongodb at localhost:27017
+
 server:
   port: 8080
-
-# use local mongodb at localhost:27017
 
 ---
 

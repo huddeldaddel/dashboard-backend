@@ -16,3 +16,7 @@ spring:
 
 server:
   port: ${PORT}
+
+tracker:
+  project: ${TRACKER_PROJECT}
+  token: ${TRACKER_TOKEN}

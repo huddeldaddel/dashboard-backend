@@ -6,12 +6,14 @@ import engineer.thomas_werner.dashboard.domain.Sprint;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -27,32 +29,42 @@ public class TrackerService {
         this.urlPrefix = "https://www.pivotaltracker.com/services/v5/projects/" + project + "/iterations";
     }
 
-    public List<Sprint> loadCurrentIteration() throws IOException {
-        final StopWatch watch = new StopWatch();
-        watch.start();
+    public Optional<Sprint> loadCurrentSprint() {
+        try {
+            final StopWatch watch = new StopWatch();
+            watch.start();
 
-        final String url = urlPrefix + "?scope=current";
-        final String json = loadResource(url);
-        final List<Sprint> result = new ObjectMapper().readValue(json, new TypeReference<List<Sprint>>(){});
+            final String url = urlPrefix + "?scope=current";
+            final String json = loadResource(url);
+            final List<Sprint> result = new ObjectMapper().readValue(json, new TypeReference<List<Sprint>>(){});
 
-        watch.stop();
-        log.info("Retrieved current Tracker iteration in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
+            watch.stop();
+            log.info("Retrieved current Tracker iteration in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
 
-        return result;
+            return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+        } catch(Exception ex) {
+            log.error("Failed to load current sprint from Pivotal Tracker", ex);
+            return Optional.empty();
+        }
     }
 
-    public Sprint loadIteration(final Integer number) throws IOException {
-        final StopWatch watch = new StopWatch();
-        watch.start();
+    public Optional<Sprint> loadSprint(final Integer number) {
+        try {
+            final StopWatch watch = new StopWatch();
+            watch.start();
 
-        final String url = urlPrefix + "/" + number;
-        final String json = loadResource(url);
-        final Sprint result = new ObjectMapper().readValue(json, Sprint.class);
+            final String url = urlPrefix + "/" + number;
+            final String json = loadResource(url);
+            final Sprint result = new ObjectMapper().readValue(json, Sprint.class);
 
-        watch.stop();
-        log.info("Retrieved Tracker iteration " + number + " in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
+            watch.stop();
+            log.info("Retrieved Tracker iteration " + number + " in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
 
-        return result;
+            return Optional.of(result);
+        } catch(Exception ex) {
+            log.error("Failed to load sprint #" + number + " from Pivotal Tracker", ex);
+            return Optional.empty();
+        }
     }
 
     private String loadResource(String url) throws IOException {
@@ -60,7 +72,10 @@ public class TrackerService {
                 .url(url)
                 .header("X-TrackerToken", token)
                 .build();
-        return new OkHttpClient().newCall(request).execute().body().string();
+        final Response response = new OkHttpClient().newCall(request).execute();
+        if(200 != response.code())
+            throw new IOException("Failed to load resource");
+        return response.body().string();
     }
 
 }

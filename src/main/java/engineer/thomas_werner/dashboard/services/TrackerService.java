@@ -7,14 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -33,13 +32,10 @@ public class TrackerService {
         try {
             final StopWatch watch = new StopWatch();
             watch.start();
-
-            final String url = urlPrefix + "?scope=current";
-            final String json = loadResource(url);
+            final String json = loadResource(urlPrefix + "?scope=current");
             final List<Sprint> result = new ObjectMapper().readValue(json, new TypeReference<List<Sprint>>(){});
-
             watch.stop();
-            log.info("Retrieved current Tracker iteration in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
+            log.info("Retrieved current Tracker iteration in " + watch.getTotalTimeMillis() + " ms");
 
             return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
         } catch(Exception ex) {
@@ -58,7 +54,7 @@ public class TrackerService {
             final Sprint result = new ObjectMapper().readValue(json, Sprint.class);
 
             watch.stop();
-            log.info("Retrieved Tracker iteration " + number + " in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
+            log.info("Retrieved Tracker iteration " + number + " in " + watch.getTotalTimeMillis() + " ms");
 
             return Optional.of(result);
         } catch(Exception ex) {

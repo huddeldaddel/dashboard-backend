@@ -8,14 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -39,11 +38,10 @@ public class GithubService {
             watch.start();
 
             final String json = loadResource("https://api.github.com/repos/" + owner + "/" + repository + "/pulls");
-            log.info(json);
             final List<PullRequest> result = new ObjectMapper().readValue(json, new TypeReference<List<PullRequest>>(){});
 
             watch.stop();
-            log.info("Retrieved pull requests for " + repository + " in " + watch.getTime(TimeUnit.MILLISECONDS) + " ms");
+            log.info("Retrieved pull requests for " + repository + " in " + watch.getTotalTimeMillis() + " ms");
 
             return Optional.of(new Repository(repository, result));
         } catch (IOException e) {

@@ -8,6 +8,11 @@ server:
 
 ---
 
+github:
+  owner: ${GITHUB_OWNER}
+  repositories: ${GITHUB_REPOSITORIES}
+  token: ${GITHUB_TOKEN}
+
 spring:
   profiles: production
   data:

@@ -2,17 +2,14 @@ package engineer.thomas_werner.dashboard.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Sprint {
+public class Label {
 
-    @Id
-    private String id;
-    private Integer number;
-    private List<Story> stories;
+    private Long id;
+    private String name;
+    private String description;
+    private String color;
 
 }

@@ -71,7 +71,11 @@ public class TrackerService {
         final Response response = new OkHttpClient().newCall(request).execute();
         if(200 != response.code())
             throw new IOException("Failed to load resource");
-        return response.body().string();
+        if (response.body() != null) {
+            return response.body().string();
+        } else {
+            throw new IOException("No resource body found");
+        }
     }
 
 }

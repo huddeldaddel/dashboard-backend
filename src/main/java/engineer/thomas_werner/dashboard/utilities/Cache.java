@@ -50,7 +50,7 @@ public class Cache<T> {
         try {
             if(!isFresh(values.get(key))) {                                                                             // might have been updated while waiting for lock
                 supplier.get(key).ifPresent(t -> values.put(key, new ValueWithTimeStamp<>(t, LocalDateTime.now())));
-                log.info(Optional.ofNullable(name).orElse("unknown cache") + ": refreshed");
+                log.info(Optional.ofNullable(name).orElse("unknown cache") + ": refreshed " + key);
             }
         } finally {
             lock.unlock();

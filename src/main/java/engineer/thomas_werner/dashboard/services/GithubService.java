@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,18 +33,25 @@ public class GithubService {
         this.token = token;
     }
 
+    public List<String> getRepositoryNames() {
+        return Arrays.asList(repositories);
+    }
+
     public Optional<Repository> loadRepository(final String repository) {
+        if(!getRepositoryNames().contains(repository))                                                                  // only return data for configured repositories
+            return Optional.empty();
+
         try {
             final StopWatch watch = new StopWatch();
             watch.start();
 
             final String json = loadResource("https://api.github.com/repos/" + owner + "/" + repository + "/pulls");
-            final List<PullRequest> result = new ObjectMapper().readValue(json, new TypeReference<List<PullRequest>>(){});
+            final List<PullRequest> prs = new ObjectMapper().readValue(json, new TypeReference<List<PullRequest>>(){});
 
             watch.stop();
             log.info("Retrieved pull requests for " + repository + " in " + watch.getTotalTimeMillis() + " ms");
 
-            return Optional.of(new Repository(repository, result));
+            return Optional.of(new Repository(repository, prs));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,7 +68,11 @@ public class GithubService {
         final Response response = new OkHttpClient().newCall(request).execute();
         if(200 != response.code())
             throw new IOException("Failed to load resource");
-        return response.body().string();
+        if (response.body() != null) {
+            return response.body().string();
+        } else {
+            throw new IOException("No resource body found");
+        }
     }
 
 }

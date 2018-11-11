@@ -12,6 +12,7 @@ import java.util.List;
 public class PullRequest {
 
     private String createdAt;
+    private String htmlUrl;
     private PullRequestHead head;
     private String title;
     private PullRequestUser user;
@@ -25,6 +26,16 @@ public class PullRequest {
     @JsonSetter("created_at")
     public void setCreatedAt(String value) {
         createdAt = value;
+    }
+
+    @JsonGetter("html_url")
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    @JsonSetter("html_url")
+    public void setHtmlUrl(String value) {
+        htmlUrl = value;
     }
 
 }

@@ -15,16 +15,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HomeController {
 
+    private String home;
+
+    public HomeController() {
+        try(final Reader r = new InputStreamReader(HomeController.class.getResourceAsStream("home.html"));
+            final BufferedReader br = new BufferedReader(r)) {
+            home = br.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            log.error("Failed to load home.html", e);
+        }
+    }
+
     @GetMapping("/")
     @ResponseBody
     public String home() {
-        try(final Reader r = new InputStreamReader(HomeController.class.getResourceAsStream("home.html"));
-            final BufferedReader br = new BufferedReader(r)) {
-            return br.lines().collect(Collectors.joining("\n"));
-        } catch (IOException e) {
-            log.error("Failed to load home.html", e);
-            return "Not good";
-        }
+        return home;
     }
 
 }

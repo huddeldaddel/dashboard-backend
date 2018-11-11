@@ -4,6 +4,7 @@ spring:
 # use local mongodb at localhost:27017
 
 server:
+  cors: http://localhost:3000
   port: 8080
 
 ---
@@ -20,6 +21,7 @@ spring:
       uri: ${MONGODB_URI}
 
 server:
+  cors:
   port: ${PORT}
 
 tracker:

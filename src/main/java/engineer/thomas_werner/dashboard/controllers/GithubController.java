@@ -15,6 +15,9 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 @RestController
 public class GithubController {
 
+    public static final String REPO_LIST_MAPPING = "/github/repositories";
+    public static final String PULL_REQUEST_MAPPING = "/github/repositories/{name}/pulls";
+
     private Cache<Repository> repositoryCache;
     private GithubService githubService;
 
@@ -24,12 +27,12 @@ public class GithubController {
         this.repositoryCache.setName("Github repository cache");
     }
 
-    @GetMapping("/github/repositories")
+    @GetMapping(REPO_LIST_MAPPING)
     public List<String> getCurrentSprint() {
         return githubService.getRepositoryNames();
     }
 
-    @GetMapping("/github/repositories/{name}/pulls")
+    @GetMapping(PULL_REQUEST_MAPPING)
     public List<PullRequest> getPullRequests(@PathVariable final String name) {
         final Repository repository = repositoryCache.get(name).orElseThrow(NotFoundException::new);
         return repository.getPullRequests();

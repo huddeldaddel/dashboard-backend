@@ -13,6 +13,7 @@ public class Sprint {
     @Id
     private String id;
     private Integer number;
+    private String start;
     private List<Story> stories;
 
 }

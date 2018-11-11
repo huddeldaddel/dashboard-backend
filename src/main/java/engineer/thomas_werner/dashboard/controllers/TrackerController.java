@@ -16,6 +16,9 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 @RestController
 public class TrackerController {
 
+    public static final String CURRENT_SPRINT_MAPPING = "/tracker/sprints/current";
+    public static final String SPECIFIC_SPRINT_MAPPING = "/tracker/sprints/{id}";
+
     private final Cache<Sprint> currentSprintCache;
     private final SprintRepository sprintRepository;
     private final TrackerService trackerService;
@@ -28,12 +31,12 @@ public class TrackerController {
         this.currentSprintCache.setName("Tracker current sprint cache");
     }
 
-    @GetMapping("/tracker/sprints/current")
+    @GetMapping(CURRENT_SPRINT_MAPPING)
     public Sprint getCurrentSprint() {
-        return currentSprintCache.get(null).orElseThrow(NotFoundException::new);
+        return currentSprintCache.get("current").orElseThrow(NotFoundException::new);
     }
 
-    @GetMapping("/tracker/sprints/{id}")
+    @GetMapping(SPECIFIC_SPRINT_MAPPING)
     public Sprint getSprint(@PathVariable final Integer id) {
         final List<Sprint> cached = sprintRepository.findByNumber(id);
         if(!cached.isEmpty())

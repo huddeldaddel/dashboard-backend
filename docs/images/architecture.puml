@@ -1,0 +1,18 @@
+@startuml
+
+package "Web Services" {
+    [Github]
+    [Pivotal Tracker]
+    [Github] -[hidden]down- [Pivotal Tracker]
+}
+
+package "Dashboard" {
+  [Backend] - REST
+  REST - [Frontend]
+  database MongoDB
+  [Backend] -down- MongoDB
+  [Backend] -left- [Github]
+  [Backend] -left- [Pivotal Tracker]
+}
+
+@enduml

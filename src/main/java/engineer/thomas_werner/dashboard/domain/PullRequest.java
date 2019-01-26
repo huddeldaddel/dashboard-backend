@@ -11,6 +11,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PullRequest {
 
+    private String id;
     private String createdAt;
     private String htmlUrl;
     private PullRequestHead head;

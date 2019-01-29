@@ -20,6 +20,10 @@ spring:
     mongodb:
       uri: ${MONGODB_URI}
 
+security:
+  user: ${USERNAME}
+  password: ${PASSWORD}
+
 server:
   cors:
   port: ${PORT}

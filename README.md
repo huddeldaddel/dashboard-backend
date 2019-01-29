@@ -49,8 +49,13 @@ should look someting like this:
 `github.owner=<Github team>`  
 `github.repositories=<repository name 1>,<repository name 2>`  
 `github.token=<Github token>`  
+`security.user=user`
+`security.password=secret`
 `tracker.project=<Pivotal Tracker project ID>`  
 `tracker.token=<Pivotal Tracker token>`
+
+The settings for `security.user` and `security.password` are optional. If they're set, the application will be 
+configured to use Basic Auth to secure all endpoints. Otherwise anonymous access will be granted.
 
 ### Running the code
 

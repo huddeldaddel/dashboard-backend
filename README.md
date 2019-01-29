@@ -49,8 +49,8 @@ should look someting like this:
 `github.owner=<Github team>`  
 `github.repositories=<repository name 1>,<repository name 2>`  
 `github.token=<Github token>`  
-`security.user=user`
-`security.password=secret`
+`security.user=user`  
+`security.password=secret`  
 `tracker.project=<Pivotal Tracker project ID>`  
 `tracker.token=<Pivotal Tracker token>`
 

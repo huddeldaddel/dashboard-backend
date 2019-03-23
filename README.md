@@ -1,5 +1,7 @@
 # Dashboard (backend)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/665569bd135b463cb093a05aa401e807)](https://app.codacy.com/app/huddeldaddel/dashboard-backend?utm_source=github.com&utm_medium=referral&utm_content=huddeldaddel/dashboard-backend&utm_campaign=Badge_Grade_Dashboard)
+
 An intuitive developer dashboard that displays the most important key figures of a sprint. The data is collected from 
 Pivotal Tracker and Github, processed and clearly presented. The progress of the sprint, the complexity of the 
 individual tickets, the number of open pull requests and the average lifetime of bugs and pull requests can thus be read

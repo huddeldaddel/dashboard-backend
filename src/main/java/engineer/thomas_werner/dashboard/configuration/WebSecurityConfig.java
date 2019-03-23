@@ -20,14 +20,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final String user;
     private final String password;
 
+    @Autowired
+    private AuthenticationEntryPoint authEntryPoint;
+
     public WebSecurityConfig(@Value("${security.user}") final String user,
                              @Value("${security.password}") final String password) {
         this.user = user;
         this.password = password;
     }
-
-    @Autowired
-    private AuthenticationEntryPoint authEntryPoint;
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {

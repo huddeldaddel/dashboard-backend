@@ -13,8 +13,8 @@ at a glance by the members of the development team.
 
 The dashboard consists of two parts: 
 
- * a frontend application, which is written in JavaScript (React) and
- * a backend application, which is written in Java (Spring Boot).
+* a frontend application, which is written in JavaScript (React) and
+* a backend application, which is written in Java (Spring Boot).
 
 ![UML Component Diagram](/docs/images/architecture.png)
 
